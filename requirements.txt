@@ -1,0 +1,29 @@
+# Orchestrierung
+dagster
+dagster-webserver
+dagster-postgres
+
+# Transformation
+dbt-postgres
+
+# Data Quality
+great_expectations
+
+# Datenverarbeitung
+pandas
+numpy
+
+# ML: Schema Matching & Entity Resolution
+sentence-transformers
+rapidfuzz
+scikit-learn
+xgboost
+
+# Storage-Anbindung
+boto3          # MinIO ist S3-kompatibel, daher boto3 statt eines eigenen MinIO-SDKs
+sqlalchemy
+psycopg2-binary==2.9.9
+
+# Utilities
+python-dotenv
+faker          # zur Generierung der synthetischen Daten in Phase 1

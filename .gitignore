@@ -1,0 +1,29 @@
+# Environment
+.env
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# Dagster
+.dagster_home/
+storage/
+
+# dbt
+transform/target/
+transform/dbt_packages/
+transform/logs/
+
+# Great Expectations
+great_expectations/uncommitted/
+
+# Daten (synthetische Rohdaten werden per Skript generiert, nicht committed)
+data/synthetic/*.csv
+data/synthetic/*.json
+data/synthetic/*.parquet
+!data/synthetic/.gitkeep
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
