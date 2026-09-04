@@ -1,0 +1,52 @@
+{
+  "customer_id": {
+    "source_a": "kundennr",
+    "source_b": "customer_id",
+    "source_c": "cust_no (Cust.No.)"
+  },
+  "name": {
+    "source_a": "nachname + vorname (getrennt)",
+    "source_b": "full_name (zusammengesetzt: 'Nachname, Vorname')",
+    "source_c": "name (zusammengesetzt: 'Vorname Nachname')"
+  },
+  "date_of_birth": {
+    "source_a": "geburtsdatum",
+    "source_b": "date_of_birth",
+    "source_c": "geb_dat"
+  },
+  "address": {
+    "source_a": "plz + ort + strasse (getrennt)",
+    "source_b": "postal_code + city (keine Straße)",
+    "source_c": "adresse (ein Freitextfeld, alles zusammen)"
+  },
+  "contract_id": {
+    "source_a": "vertragsnr",
+    "source_b": "contract_id",
+    "source_c": "vertr_nr (Vertr.-Nr.)"
+  },
+  "contract_customer_ref": {
+    "source_a": "kundennr (referenziert Quelle-A-Kunden-ID)",
+    "source_b": "customer_id (referenziert Quelle-B-Kunden-ID)",
+    "source_c": "cust_no (referenziert Quelle-C-Kunden-ID)"
+  },
+  "contract_start_date": {
+    "source_a": "beginn",
+    "source_b": "start_date",
+    "source_c": "beginn"
+  },
+  "contract_category": {
+    "source_a": "typ ('Typ A' / 'Typ B' / 'Typ C', gelegentlich Kleinschreibung)",
+    "source_b": "category ('TYPA' / 'TYPB' / 'TYPC')",
+    "source_c": "typ ('type_a' / 'type_b' / 'type_c')"
+  },
+  "contract_amount": {
+    "source_a": "betrag (deutsches Zahlenformat als String, z.B. '1.234,56')",
+    "source_b": "amount (echte Zahl, z.B. 1234.56)",
+    "source_c": "betrag (deutsches Zahlenformat + Einheit als Freitext, z.B. '1.234,56 EUR')"
+  },
+  "contract_status": {
+    "source_a": "status ('aktiv' / 'gekuendigt', gelegentlich leer)",
+    "source_b": "status ('active' / 'cancelled')",
+    "source_c": "status ('1' / '0', numerischer Code)"
+  }
+}

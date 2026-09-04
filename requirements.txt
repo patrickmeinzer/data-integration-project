@@ -27,3 +27,5 @@ psycopg2-binary==2.9.9
 # Utilities
 python-dotenv
 faker          # zur Generierung der synthetischen Daten in Phase 1
+fpdf2
+
