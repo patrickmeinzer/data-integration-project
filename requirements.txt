@@ -12,6 +12,7 @@ great_expectations
 # Datenverarbeitung
 pandas
 numpy
+pdfplumber
 
 # ML: Schema Matching & Entity Resolution
 sentence-transformers
