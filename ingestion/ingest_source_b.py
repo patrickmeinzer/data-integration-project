@@ -6,21 +6,24 @@ from . import connections
 from . import config
 
 SOURCE_B_DIR = config.PROJECT_ROOT / "data" / "synthetic" / "source_b"
+DOWNLOAD_DIR = config.PROJECT_ROOT / "data" / "minio_downloads" / "source_b"
 
 
-def _read_source_b_json(filename: str, key: str) -> pd.DataFrame:
-    json_path = SOURCE_B_DIR / filename
-    with open(json_path, encoding="utf-8") as f:
+def _download_and_read_source_b_json(filename: str, key: str) -> pd.DataFrame:
+    DOWNLOAD_DIR.mkdir(parents=True, exist_ok=True)
+    local_path = DOWNLOAD_DIR / filename
+
+    client = connections.get_minio_client()
+    connections.download_file_from_minio(
+        client=client,
+        bucket_name=config.MINIO_RAW_BUCKET,
+        object_key=f"source_b/{filename}",
+        local_path=local_path,
+    )
+
+    with open(local_path, encoding="utf-8") as f:
         data = json.load(f)
     return pd.DataFrame(data[key])
-
-
-def read_customers_json() -> pd.DataFrame:
-    return _read_source_b_json("customers.json", "customers")
-
-
-def read_contracts_json() -> pd.DataFrame:
-    return _read_source_b_json("contracts.json", "contracts")
 
 
 def upload_raw_files_to_minio() -> None:
@@ -37,13 +40,13 @@ def upload_raw_files_to_minio() -> None:
 
 
 def load_customers_to_postgres() -> None:
-    df = read_customers_json()
+    df = _download_and_read_source_b_json("customers.json", "customers")
     engine = connections.get_postgres_engine()
     df.to_sql("raw_source_b_customers", engine, if_exists="replace", index=False)
 
 
 def load_contracts_to_postgres() -> None:
-    df = read_contracts_json()
+    df = _download_and_read_source_b_json("contracts.json", "contracts")
     engine = connections.get_postgres_engine()
     df.to_sql("raw_source_b_contracts", engine, if_exists="replace", index=False)
 

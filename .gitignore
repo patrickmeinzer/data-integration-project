@@ -22,6 +22,7 @@ data/synthetic/*.csv
 data/synthetic/*.json
 data/synthetic/*.parquet
 !data/synthetic/.gitkeep
+data/minio_downloads/
 
 # IDE / OS
 .vscode/
