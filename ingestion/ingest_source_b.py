@@ -2,8 +2,8 @@ import json
 
 import pandas as pd
 
-import connections
-import config
+from . import connections
+from . import config
 
 SOURCE_B_DIR = config.PROJECT_ROOT / "data" / "synthetic" / "source_b"
 

@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Union
 import boto3
 
-import config
+from . import config
 
 def get_postgres_engine() -> Engine:
     connection_string = config.get_postgres_connection_string()

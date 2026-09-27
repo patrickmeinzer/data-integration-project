@@ -3,8 +3,8 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-import connections
-import config
+from . import connections
+from . import config
 
 SOURCE_C_DIR = config.PROJECT_ROOT / "data" / "synthetic" / "source_C"
 

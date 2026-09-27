@@ -1,7 +1,7 @@
 import pandas as pd
 
-import config
-import connections
+from . import config
+from . import connections
 
 SOURCE_A_DIR = config.PROJECT_ROOT / "data" / "synthetic" / "source_a"
 
