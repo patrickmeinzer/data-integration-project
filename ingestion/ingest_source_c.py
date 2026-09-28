@@ -7,6 +7,7 @@ from . import connections
 from . import config
 
 SOURCE_C_DIR = config.PROJECT_ROOT / "data" / "synthetic" / "source_C"
+DOWNLOAD_DIR = config.PROJECT_ROOT / "data" / "minio_downloads" / "source_c" 
 
 def _read_single_pdf_table(pdf_path: Path) -> pd.DataFrame:
     all_rows = []
@@ -27,16 +28,6 @@ def _read_single_pdf_table(pdf_path: Path) -> pd.DataFrame:
     df = pd.DataFrame(all_rows, columns=header)
     df["source_file"] = pdf_path.name
     return df
-
-def read_all_customer_pdfs() -> pd.DataFrame:
-    pdf_paths = sorted(SOURCE_C_DIR.glob("partner_export_day*.pdf"))
-    dataframes = [_read_single_pdf_table(p) for p in pdf_paths]
-    return pd.concat(dataframes, ignore_index=True)
-
-def read_all_contracts_pdfs() -> pd.DataFrame:
-    pdf_paths = sorted(SOURCE_C_DIR.glob("partner_contracts_day*.pdf"))
-    dataframes = [_read_single_pdf_table(p) for p in pdf_paths]
-    return pd.concat(dataframes, ignore_index=True)
 
 def upload_raw_files_to_minio() -> None:
     client = connections.get_minio_client()
@@ -61,6 +52,42 @@ def load_contracts_to_postgres() -> None:
     df = read_all_contracts_pdfs()
     engine = connections.get_postgres_engine()
     df.to_sql("raw_source_c_contracts", engine, if_exists="replace", index=False)
+
+def _download_and_read_source_c_pdfs(prefix: str) -> pd.DataFrame:
+    DOWNLOAD_DIR.mkdir(parents=True, exist_ok=True)
+    client = connections.get_minio_client()
+
+    object_keys = sorted(
+        connections.list_objects_in_minio(client, config.MINIO_RAW_BUCKET, prefix)
+    )
+
+    if not object_keys:
+        raise FileNotFoundError(
+            f"Keine Objekte unter dem Präfix '{prefix}' im Bucket "
+            f"'{config.MINIO_RAW_BUCKET}' gefunden. "
+            "Wurde der Upload der Rohdateien schon ausgeführt?"
+        )
+
+    dataframes = []
+    for object_key in object_keys:
+        local_path = DOWNLOAD_DIR / Path(object_key).name
+        connections.download_file_from_minio(
+            client=client,
+            bucket_name=config.MINIO_RAW_BUCKET,
+            object_key=object_key,
+            local_path=local_path,
+        )
+        dataframes.append(_read_single_pdf_table(local_path))
+
+    return pd.concat(dataframes, ignore_index=True)
+
+
+def read_all_customer_pdfs() -> pd.DataFrame:
+    return _download_and_read_source_c_pdfs("source_c/partner_export_day")
+
+
+def read_all_contracts_pdfs() -> pd.DataFrame:
+    return _download_and_read_source_c_pdfs("source_c/partner_contracts_day")
 
 
 def main() -> None:
