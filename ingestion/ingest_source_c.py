@@ -45,13 +45,13 @@ def upload_raw_files_to_minio() -> None:
 def load_customers_to_postgres() -> None:
     df = read_all_customer_pdfs()
     engine = connections.get_postgres_engine()
-    df.to_sql("raw_source_c_customers", engine, if_exists="replace", index=False)
+    connections.replace_table_contents(df, "raw_source_c_customers", engine)
 
 
 def load_contracts_to_postgres() -> None:
     df = read_all_contracts_pdfs()
     engine = connections.get_postgres_engine()
-    df.to_sql("raw_source_c_contracts", engine, if_exists="replace", index=False)
+    connections.replace_table_contents(df, "raw_source_c_contracts", engine)
 
 def _download_and_read_source_c_pdfs(prefix: str) -> pd.DataFrame:
     DOWNLOAD_DIR.mkdir(parents=True, exist_ok=True)

@@ -42,13 +42,13 @@ def upload_raw_files_to_minio() -> None:
 def load_customers_to_postgres() -> None:
     df = _download_and_read_source_b_json("customers.json", "customers")
     engine = connections.get_postgres_engine()
-    df.to_sql("raw_source_b_customers", engine, if_exists="replace", index=False)
+    connections.replace_table_contents(df, "raw_source_b_customers", engine)
 
 
 def load_contracts_to_postgres() -> None:
     df = _download_and_read_source_b_json("contracts.json", "contracts")
     engine = connections.get_postgres_engine()
-    df.to_sql("raw_source_b_contracts", engine, if_exists="replace", index=False)
+    connections.replace_table_contents(df, "raw_source_b_contracts", engine)
 
 
 def main() -> None:

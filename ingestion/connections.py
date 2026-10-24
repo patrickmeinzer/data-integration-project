@@ -1,8 +1,9 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, inspect, text
 from sqlalchemy.engine import Engine
 from pathlib import Path
 from typing import List, Union
 import boto3
+import pandas as pd
 
 from . import config
 
@@ -27,6 +28,12 @@ def upload_file_to_minio(
     client, bucket_name: str, local_path: Union[str, Path], object_key: str) -> None:
     ensure_bucket_exists(client, bucket_name)
     client.upload_file(str(local_path), bucket_name, object_key)
+
+def replace_table_contents(df: pd.DataFrame, table_name: str, engine: Engine) -> None:
+    with engine.begin() as conn:
+        if inspect(conn).has_table(table_name):
+            conn.execute(text(f"TRUNCATE TABLE {table_name}"))
+        df.to_sql(table_name, conn, if_exists="append", index=False)
 
 def download_file_from_minio(
     client, bucket_name: str, object_key: str, local_path: Union[str, Path]) -> None:

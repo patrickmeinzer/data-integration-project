@@ -33,12 +33,12 @@ def _download_and_read_source_a_csv(filename: str) -> pd.DataFrame:
 def load_customers_to_postgres() -> None:
     df = _download_and_read_source_a_csv("kunden_export.csv")
     engine = connections.get_postgres_engine()
-    df.to_sql("raw_source_a_customers", engine, if_exists="replace", index=False)
+    connections.replace_table_contents(df, "raw_source_a_customers", engine)
 
 def load_contracts_to_postgres() -> None:
     df = _download_and_read_source_a_csv("vertraege_export.csv")
     engine = connections.get_postgres_engine()
-    df.to_sql("raw_source_a_contracts", engine, if_exists="replace", index=False)
+    connections.replace_table_contents(df, "raw_source_a_contracts", engine)
 
 def main() -> None:
     print("Lade Rohdateien nach MinIO hoch...")
