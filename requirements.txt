@@ -4,7 +4,8 @@ dagster-webserver
 dagster-postgres
 
 # Transformation
-dbt-postgres
+dbt-core~=1.8.0
+dbt-postgres==1.8.2
 
 # Data Quality
 great_expectations

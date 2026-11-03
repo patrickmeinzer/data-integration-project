@@ -28,7 +28,7 @@ def _download_and_read_source_a_csv(filename: str) -> pd.DataFrame:
         object_key=f"source_a/{filename}",
         local_path=local_path,
     )
-    return pd.read_csv(local_path, delimiter=";", encoding="utf-8")
+    return pd.read_csv(local_path, delimiter=";", encoding="utf-8", dtype=str)
 
 def load_customers_to_postgres() -> None:
     df = _download_and_read_source_a_csv("kunden_export.csv")
