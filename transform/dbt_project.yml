@@ -1,0 +1,11 @@
+name: 'data_integration'
+version: '1.0.0'
+profile: 'data_integration'
+
+model-paths: ["models"]
+
+models:
+  data_integration:
+    staging:
+      +materialized: view
+      +schema: staging

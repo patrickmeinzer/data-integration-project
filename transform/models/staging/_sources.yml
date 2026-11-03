@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: public
+    tables:
+      - name: raw_source_a_customers
+      - name: raw_source_a_contracts
+      - name: raw_source_b_customers
+      - name: raw_source_b_contracts
+      - name: raw_source_c_customers
+      - name: raw_source_c_contracts

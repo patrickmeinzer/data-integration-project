@@ -1,0 +1,12 @@
+data_integration:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: "{{ env_var('POSTGRES_HOST', 'localhost') }}"
+      port: "{{ env_var('POSTGRES_PORT', '5432') | as_number }}"
+      user: "{{ env_var('POSTGRES_USER', 'di_user') }}"
+      password: "{{ env_var('POSTGRES_PASSWORD', 'di_password') }}"
+      dbname: "{{ env_var('POSTGRES_DB', 'data_integration') }}"
+      schema: analytics
+      threads: 1
